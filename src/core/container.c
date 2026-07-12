@@ -10,11 +10,8 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "core/environment.h"
-#include "core/mount_namespace.h"
-#include "core/rootfs/rootfs.h"
+#include "core/container_setup.h"
 #include "core/user_namespace.h"
-#include "core/uts_namespace.h"
 #include "sys/sys.h"
 #include "utils/log.h"
 
@@ -119,20 +116,10 @@ static int child_main(void *arg) {
 
     sys_close(child_cfg->pipe_fd[0]);
 
-    environment_setup(child_cfg->config);
-
-    if (uts_namespace_setup(child_cfg->config) < 0) {
-        log_error("uts_namespace_setup failed");
+    if (container_setup(child_cfg->config) < 0) {
         return EXIT_FAILURE;
     }
 
-    if (mount_namespace_setup() < 0) {
-        return EXIT_FAILURE;
-    }
-
-    if (rootfs_setup(child_cfg->config) < 0) {
-        return EXIT_FAILURE;
-    }
     return init_process(child_cfg->config);
 }
 
