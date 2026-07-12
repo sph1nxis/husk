@@ -11,3 +11,4 @@ int environment_setup(const container_config *config) {
         1
     );
 }
+

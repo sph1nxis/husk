@@ -24,7 +24,7 @@ static void log_message(
     char buffer[LOG_BUFFER_SIZE];
     int offset = 0;
 
-    pid_t pid = getpid();
+    pid_t pid = sys_getpid();
 
     time_t now = time(NULL);
     struct tm tm_now;
@@ -66,7 +66,7 @@ static void log_message(
 }
 
 int log_init(const char *path) {
-    int fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    int fd = sys_open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
     if (fd < 0) {
         return -1;
@@ -79,7 +79,7 @@ int log_init(const char *path) {
 
 void log_close(void) {
     if (log_fd != STDERR_FILENO) {
-        close(log_fd);
+        sys_close(log_fd);
     }
 }
 
@@ -122,7 +122,7 @@ void log_errno(const char *fmt, ...) {
     char buffer[LOG_BUFFER_SIZE];
     int offset = 0;
 
-    pid_t pid = getpid();
+    pid_t pid = sys_getpid();
 
     time_t now = time(NULL);
     struct tm tm_now;

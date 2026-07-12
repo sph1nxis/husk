@@ -29,8 +29,7 @@ typedef struct child_config {
     int pipe_fd[2];
 } child_config;
 
-static void sigchld_handler(int signo)
-{
+static void sigchld_handler(int signo) {
     (void) signo;
 }
 

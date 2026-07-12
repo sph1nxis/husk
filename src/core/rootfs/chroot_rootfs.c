@@ -16,6 +16,7 @@ static int activate(const container_config *config) {
     if (config->rootfs == NULL) {
         return 0;
     }
+
     if (sys_chroot(config->rootfs) < 0) {
         log_errno("chroot");
         return -1;

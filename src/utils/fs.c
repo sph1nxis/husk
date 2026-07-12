@@ -8,7 +8,7 @@
 #include "utils/log.h"
 
 int write_file(const char *path, const char *content) {
-    int fd = open(path, O_WRONLY);
+    int fd = sys_open(path, O_WRONLY, 0);
 
     if (fd < 0) {
         log_errno("open(%s)", path);
@@ -19,7 +19,7 @@ int write_file(const char *path, const char *content) {
 
     if (sys_write(fd, content, len) != len) {
         log_errno("write(%s)", path);
-        close(fd);
+        sys_close(fd);
         return -1;
     }
 
