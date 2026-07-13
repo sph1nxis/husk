@@ -23,13 +23,18 @@ Result container_setup(const container_config *config) {
     if (rc != kResultOk) {
         return rc;
     }
-
-    rc = rootfs_setup(config);
+    
+    rc = rootfs_prepare(config);
     if (rc != kResultOk) {
         return rc;
     }
 
-    rc = procfs_setup() < 0;
+    rc = rootfs_enter(config);
+    if (rc != kResultOk) {
+        return rc;
+    }
+
+    rc = procfs_setup();
     if (rc != kResultOk) {
         return rc;
     }

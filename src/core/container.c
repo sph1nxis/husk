@@ -11,6 +11,7 @@
 
 #include "core/container_setup.h"
 #include "core/init_process.h"
+#include "core/rootfs/rootfs.h"
 #include "core/user_namespace.h"
 #include "sys/sys.h"
 #include "utils/log.h"
@@ -52,7 +53,14 @@ static int child_main(void *arg) {
         return EXIT_FAILURE;
     }
 
-    return init_process_run(child_cfg->config);
+    int rc = init_process_run(child_cfg->config);
+
+    Result cleanup_rc = rootfs_cleanup(child_cfg->config);
+    if (cleanup_rc != kResultOk) {
+        log_error("rootfs cleanup failed: %s", result_string(cleanup_rc));
+    }
+
+    return rc;
 }
 
 int container_run(const container_config *config) {
