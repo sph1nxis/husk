@@ -37,5 +37,6 @@ add_executable(husk
 
     src/utils/fs.c
     src/utils/log.c
+    src/utils/path.c
 )
 

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "utils/fs.h"
-#include "utils/log.h"
+#include "utils/path.h"
 #include "utils/util.h"
 
 typedef struct {
@@ -29,16 +29,7 @@ static int ensure_directory(
 ) {
     char path[PATH_MAX];
 
-    int len = snprintf(
-        path,
-        sizeof(path),
-        "%s/%s",
-        config->rootfs,
-        directory
-    );
-
-    if (len < 0 || len >= (int) sizeof(path)) {
-        log_error("rootfs path is too long");
+    if (path_join(path, sizeof(path), config->rootfs, directory) < 0) {
         return -1;
     }
 
