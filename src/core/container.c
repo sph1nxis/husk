@@ -16,12 +16,12 @@
 #include "utils/log.h"
 
 enum {
-    STACK_SIZE = 1024 * 1024
+    kStackSize = 1024 * 1024
 };
 
-static char child_stack[STACK_SIZE];
+static char child_stack[kStackSize];
 
-typedef struct child_config {
+typedef struct {
     const container_config *config;
     int pipe_fd[2];
 } child_config;
@@ -69,7 +69,7 @@ int container_run(const container_config *config) {
 
     pid_t pid = sys_clone(
         child_main,
-        child_stack + STACK_SIZE,
+        child_stack + kStackSize,
         flags,
         &child_cfg
     );

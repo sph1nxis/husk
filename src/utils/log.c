@@ -11,7 +11,7 @@
 #include "sys/sys.h"
 
 enum {
-    LOG_BUFFER_SIZE = 4096
+    kLogBufferSize = 4096
 };
 
 static int log_fd = STDERR_FILENO;
@@ -21,7 +21,7 @@ static void log_message(
     const char *fmt,
     va_list args
 ) {
-    char buffer[LOG_BUFFER_SIZE];
+    char buffer[kLogBufferSize];
     int offset = 0;
 
     pid_t pid = sys_getpid();
@@ -110,7 +110,7 @@ void log_error(const char *fmt, ...) {
 void log_errno(const char *fmt, ...) {
     int saved_errno = errno;
 
-    char user_msg[LOG_BUFFER_SIZE];
+    char user_msg[kLogBufferSize];
 
     va_list args;
     va_start(args, fmt);
@@ -119,7 +119,7 @@ void log_errno(const char *fmt, ...) {
 
     va_end(args);
 
-    char buffer[LOG_BUFFER_SIZE];
+    char buffer[kLogBufferSize];
     int offset = 0;
 
     pid_t pid = sys_getpid();

@@ -2,7 +2,7 @@
 
 #include "core/container_config.h"
 
-typedef struct rootfs_ops {
+typedef struct {
     int (*activate)(const container_config *);
     int (*cleanup)(const container_config *);
 } rootfs_ops;

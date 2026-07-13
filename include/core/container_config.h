@@ -1,6 +1,6 @@
 #pragma once
 
-typedef struct container_config {
+typedef struct {
     char **argv;             /* command to execute */
 
     const char *hostname;    /* container hostname */
