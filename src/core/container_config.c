@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#include "utils/log.h"
+
 void container_config_init(container_config *config) {
     config->argv = NULL;
     config->hostname = "husk";
@@ -31,6 +33,7 @@ int container_config_enable_namespace(container_config *config, unsigned int ns)
 
 int container_config_build(container_config *config) {
     if (config->argv == NULL) {
+        log_error("no command specified");
         return -1;
     }
     return 0;

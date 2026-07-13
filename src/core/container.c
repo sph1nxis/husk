@@ -100,9 +100,7 @@ int container_run(const container_config *config) {
         log_errno("write (sync)");
         sys_close(child_cfg.pipe_fd[1]);
 
-        if (sys_waitpid(pid, NULL, 0) < 0) {
-            log_errno("waitpid after sync failure");
-        }
+        sys_waitpid(pid, NULL, 0);
 
         return EXIT_FAILURE;
     }

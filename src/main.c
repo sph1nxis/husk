@@ -35,7 +35,6 @@ int main(int argc, char **argv) {
     container_config_enable_namespace(&config, CLONE_NEWNS);
 
     if (container_config_build(&config) < 0) {
-        fprintf(stderr, "Invalid container configuration\n");
         log_close();
         return EXIT_FAILURE;
     }
