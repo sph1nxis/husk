@@ -2,6 +2,11 @@
 
 #include "core/result.h"
 
+typedef enum {
+    kContainerConfigBuilding,
+    kContainerConfigBuilt,
+} ContainerConfigState;
+
 typedef struct {
     char **argv;             /* command to execute */
 
@@ -9,6 +14,8 @@ typedef struct {
     const char *rootfs;      /* root filesystem */
 
     unsigned int namespaces; /* clone namespace flags */
+    
+    ContainerConfigState state; /* config state */
 } container_config;
 
 void container_config_init(container_config *config);
