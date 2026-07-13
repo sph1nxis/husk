@@ -1,6 +1,7 @@
 #pragma once
 
-#include <core/container_config.h>
+#include "core/container_config.h"
+#include "core/result.h"
 
-int uts_namespace_setup(const container_config *config);
+Result uts_namespace_setup(const container_config *config);
 

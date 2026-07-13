@@ -1,4 +1,6 @@
 #pragma once
 
-int procfs_setup(void);
+#include "core/result.h"
+
+Result procfs_setup(void);
 

@@ -5,18 +5,22 @@
 
 static const rootfs_ops *ops = &chroot_rootfs_ops;
 
-int rootfs_setup(const container_config *config) {
-    if (rootfs_prepare_layout(config) < 0) {
-        return -1;
+Result rootfs_setup(const container_config *config) {
+    Result rc =  rootfs_prepare_layout(config);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (ops->activate(config) < 0) {
-        return -1;
+    rc = ops->activate(config) != kResultOk;
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (ops->cleanup(config) < 0) {
-        return -1;
+    rc = ops->cleanup(config) != kResultOk;
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    return 0;
+    return kResultOk;
 }
+

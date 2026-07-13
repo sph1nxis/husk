@@ -6,70 +6,89 @@
 #include "utils/fs.h"
 #include "utils/path.h"
 
-static int write_setgroups(pid_t pid) {
+static Result write_setgroups(pid_t pid) {
     char path[PATH_MAX];
-    
-    if (path_printf(path, sizeof(path), "/proc/%d/setgroups", pid) < 0) {
-        return -1;
+    Result rc;
+
+    rc = path_printf(path, sizeof(path), "/proc/%d/setgroups", pid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (fs_write_file(path, "deny") < 0) {
-        return -1;
+    rc = fs_write_file(path, "deny");
+    if (rc != kResultOk) {
+        return rc;
     }
-    return 0;
+
+    return kResultOk;
 }
 
-static int write_uid_map(pid_t pid) {
+static Result write_uid_map(pid_t pid) {
     char path[PATH_MAX];
     char map[256];
     uid_t uid = sys_getuid();
+    Result rc;
 
-    if (path_printf(path, sizeof(path), "/proc/%d/uid_map", pid) < 0) {
-        return -1;
+    rc = path_printf(path, sizeof(path), "/proc/%d/uid_map", pid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (path_printf(map, sizeof(map), "0 %d 1\n", uid) < 0) {
-        return -1;
+    rc = path_printf(map, sizeof(map), "0 %d 1\n", uid);
+    if (rc != kResultOk) {
+        return rc;
     }
-    if (fs_write_file(path, map) < 0) {
-        return -1;
+
+    rc = fs_write_file(path, map);
+    if (rc != kResultOk) {
+        return rc;
     }
-    return 0;
+
+    return kResultOk;
 }
 
-static int write_gid_map(pid_t pid) {
+static Result write_gid_map(pid_t pid) {
     char path[PATH_MAX];
     char map[256];
     gid_t gid = sys_getgid();
+    Result rc;
 
-    if (path_printf(path, sizeof(path), "/proc/%d/gid_map", pid) < 0) {
-        return -1;
+    rc = path_printf(path, sizeof(path), "/proc/%d/gid_map", pid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (path_printf(map, sizeof(map), "0 %d 1\n", gid) < 0) {
-        return -1;
+    rc = path_printf(map, sizeof(map), "0 %d 1\n", gid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (fs_write_file(path, map) < 0) {
-        return -1;
+    rc = fs_write_file(path, map);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    return 0;
+    return kResultOk;
 }
 
-int user_namespace_setup(pid_t pid) {
-    if (write_setgroups(pid) < 0) {
-        return -1;
+Result user_namespace_setup(pid_t pid) {
+    Result rc;
+
+    rc = write_setgroups(pid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (write_uid_map(pid) < 0) {
-        return -1;
+    rc = write_uid_map(pid);
+    if (rc != kResultOk) {
+        return rc;
+    }
+    
+    rc = write_gid_map(pid);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (write_gid_map(pid) < 0) {
-        return -1;
-    }
-
-    return 0;
+    return kResultOk;
 }
 

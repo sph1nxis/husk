@@ -1,6 +1,8 @@
 #pragma once
 
-int log_init(const char *path);
+#include "core/result.h"
+
+Result log_init(const char *path);
 void log_close(void);
 
 void log_info(const char *fmt, ...);

@@ -5,7 +5,7 @@
 
 #include "utils/log.h"
 
-int path_join(char *buffer, size_t size, const char *left, const char *right) {
+Result path_join(char *buffer, size_t size, const char *left, const char *right) {
     while (*right == '/') {
         ++right;
     }
@@ -13,7 +13,7 @@ int path_join(char *buffer, size_t size, const char *left, const char *right) {
     return path_printf(buffer, size, "%s/%s", left, right);
 }
 
-int path_printf(char *buffer, size_t size, const char *fmt, ...) {
+Result path_printf(char *buffer, size_t size, const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
@@ -24,8 +24,9 @@ int path_printf(char *buffer, size_t size, const char *fmt, ...) {
 
     if (len < 0 || (size_t) len >= size) {
         log_error("path is too long");
-        return -1;
+        return kResultSystemError;
     }
 
-    return 0;
+    return kResultOk;
 }
+

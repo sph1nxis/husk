@@ -30,6 +30,7 @@ add_executable(husk
     src/core/mount_namespace.c
     src/core/process.c
     src/core/procfs.c
+    src/core/result.c
     src/core/user_namespace.c
     src/core/uts_namespace.c
 

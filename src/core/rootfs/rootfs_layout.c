@@ -22,31 +22,38 @@ static const rootfs_directory directories[] = {
     { "media", 0755 },
 };
 
-static int ensure_directory(
+static Result ensure_directory(
     const container_config *config,
     const char *directory,
     mode_t mode
 ) {
     char path[PATH_MAX];
 
-    if (path_join(path, sizeof(path), config->rootfs, directory) < 0) {
-        return -1;
+    Result rc = path_join(path, sizeof(path), config->rootfs, directory);
+    if (rc != kResultOk) {
+        return rc;
     }
 
     return fs_ensure_directory(path, mode);
 }
 
-int rootfs_prepare_layout(const container_config *config) {
+Result rootfs_prepare_layout(const container_config *config) {
     if (config->rootfs == NULL) {
-        return 0;
+        return kResultOk;
     }
 
     for (size_t i = 0; i < ARRAY_SIZE(directories); ++i) {
-        if (ensure_directory(config, directories[i].path, directories[i].mode) < 0) {
-            return -1;
+        Result rc = ensure_directory(
+            config,
+            directories[i].path,
+            directories[i].mode
+        );
+
+        if (rc != kResultOk) {
+            return rc;
         }
     }
 
-    return 0;
+    return kResultOk;
 }
 

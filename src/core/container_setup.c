@@ -6,29 +6,34 @@
 #include "core/rootfs/rootfs.h"
 #include "core/uts_namespace.h"
 
-int container_setup(const container_config *config) {
-    if (environment_setup(config) < 0) {
-        return -1;
+Result container_setup(const container_config *config) {
+    Result rc;
+
+    rc = environment_setup(config);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-
-    if (uts_namespace_setup(config) < 0) {
-        return -1;
+    rc = uts_namespace_setup(config);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-
-    if (mount_namespace_setup() < 0) {
-        return -1;
+    rc = mount_namespace_setup();
+    if (rc != kResultOk) {
+        return rc;
     }
 
-
-    if (rootfs_setup(config) < 0) {
-        return -1;
+    rc = rootfs_setup(config);
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    if (procfs_setup() < 0) {
-        return -1;
+    rc = procfs_setup() < 0;
+    if (rc != kResultOk) {
+        return rc;
     }
 
-    return 0;
+    return kResultOk;
 }
+

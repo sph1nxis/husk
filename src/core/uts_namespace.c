@@ -4,7 +4,11 @@
 
 #include "sys/sys.h"
 
-int uts_namespace_setup(const container_config *config) {
-    return sys_sethostname(config->hostname, strlen(config->hostname));
+Result uts_namespace_setup(const container_config *config) {
+    if (sys_sethostname(config->hostname, strlen(config->hostname)) < 0) {
+        return result_errno_to_result();
+    }
+
+    return kResultOk;
 }
 

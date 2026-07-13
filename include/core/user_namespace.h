@@ -2,5 +2,7 @@
 
 #include <sys/types.h>
 
-int user_namespace_setup(pid_t pid);
+#include "core/result.h"
+
+Result user_namespace_setup(pid_t pid);
 

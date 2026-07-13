@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/container_config.h"
+#include "core/result.h"
 
-int environment_setup(const container_config *config);
+Result environment_setup(const container_config *config);
 

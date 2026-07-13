@@ -2,13 +2,15 @@
 
 #include <sys/types.h>
 
-int fs_write_file(const char *path, const char *content);
+#include "core/result.h"
 
-int fs_exists(const char *path);
+Result fs_write_file(const char *path, const char *content);
 
-int fs_is_directory(const char *path);
+Result fs_exists(const char *path);
 
-int fs_mkdir(const char *path, mode_t mode);
+Result fs_is_directory(const char *path);
 
-int fs_ensure_directory(const char *path, mode_t mode);
+Result fs_mkdir(const char *path, mode_t mode);
+
+Result fs_ensure_directory(const char *path, mode_t mode);
 

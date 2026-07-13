@@ -12,44 +12,111 @@
 #include "utils/log.h"
 
 static const char *signal_name(int sig) {
-    switch(sig) {
-        case SIGABRT:   return "SIGABRT";
-        case SIGALRM:   return "SIGALRM";
-        case SIGBUS:    return "SIGBUS";
-        case SIGCHLD:   return "SIGCHLD";
-        case SIGCONT:   return "SIGCONT";
-        case SIGFPE:    return "SIGFPE";
-        case SIGHUP:    return "SIGHUP";
-        case SIGILL:    return "SIGILL";
-        case SIGINT:    return "SIGINT";
-        case SIGKILL:   return "SIGKILL";
-        case SIGPIPE:   return "SIGPIPE";
-        case SIGQUIT:   return "SIGQUIT";
-        case SIGSEGV:   return "SIGSEGV";
-        case SIGSTOP:   return "SIGSTOP";
-        case SIGTERM:   return "SIGTERM";
-        case SIGTSTP:   return "SIGTSTP";
-        case SIGTTIN:   return "SIGTTIN";
-        case SIGTTOU:   return "SIGTTOU";
-        case SIGUSR1:   return "SIGUSR1";
-        case SIGUSR2:   return "SIGUSR2";
-        case SIGSYS:    return "SIGSYS";
-        case SIGTRAP:   return "SIGTRAP";
-        case SIGURG:    return "SIGURG";
-        case SIGXCPU:   return "SIGXCPU";
-        case SIGXFSZ:   return "SIGXFSZ";
-        case SIGVTALRM: return "SIGVTALRM";
-        case SIGPROF:   return "SIGPROF";
-        case SIGWINCH:  return "SIGWINCH";
-        case SIGIO:     return "SIGIO";
-        case SIGPWR:    return "SIGPWR";
+    switch (sig) {
+
+        case SIGABRT:
+            return "SIGABRT";
+
+        case SIGALRM:
+            return "SIGALRM";
+
+        case SIGBUS:
+            return "SIGBUS";
+
+        case SIGCHLD:
+            return "SIGCHLD";
+
+        case SIGCONT:
+            return "SIGCONT";
+
+        case SIGFPE:
+            return "SIGFPE";
+
+        case SIGHUP:
+            return "SIGHUP";
+
+        case SIGILL:
+            return "SIGILL";
+
+        case SIGINT:
+            return "SIGINT";
+
+        case SIGKILL:
+            return "SIGKILL";
+
+        case SIGPIPE:
+            return "SIGPIPE";
+
+        case SIGQUIT:
+            return "SIGQUIT";
+
+        case SIGSEGV:
+            return "SIGSEGV";
+
+        case SIGSTOP:
+            return "SIGSTOP";
+
+        case SIGTERM:
+            return "SIGTERM";
+
+        case SIGTSTP:
+            return "SIGTSTP";
+
+        case SIGTTIN:
+            return "SIGTTIN";
+
+        case SIGTTOU:
+            return "SIGTTOU";
+
+        case SIGUSR1:
+            return "SIGUSR1";
+
+        case SIGUSR2:
+            return "SIGUSR2";
+
+        case SIGSYS:
+            return "SIGSYS";
+
+        case SIGTRAP:
+            return "SIGTRAP";
+
+        case SIGURG:
+            return "SIGURG";
+
+        case SIGXCPU:
+            return "SIGXCPU";
+
+        case SIGXFSZ:
+            return "SIGXFSZ";
+
+        case SIGVTALRM:
+            return "SIGVTALRM";
+
+        case SIGPROF:
+            return "SIGPROF";
+
+        case SIGWINCH:
+            return "SIGWINCH";
+
+        case SIGIO:
+            return "SIGIO";
+
+        case SIGPWR:
+            return "SIGPWR";
+
 #ifdef SIGEMT
-        case SIGEMT:    return "SIGEMT";
+        case SIGEMT:
+            return "SIGEMT";
 #endif
+
 #ifdef SIGSTKFLT
-        case SIGSTKFLT: return "SIGSTKFLT";
+        case SIGSTKFLT:
+            return "SIGSTKFLT";
 #endif
-        default:        return "UNKNOWN";
+
+        default:
+            return "UNKNOWN";
+
     }
 }
 

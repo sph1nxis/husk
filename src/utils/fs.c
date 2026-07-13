@@ -9,12 +9,12 @@
 #include "sys/sys.h"
 #include "utils/log.h"
 
-int fs_write_file(const char *path, const char *content) {
+Result fs_write_file(const char *path, const char *content) {
     int fd = sys_open(path, O_WRONLY, 0);
 
     if (fd < 0) {
         log_errno("open(%s)", path);
-        return -1;
+        return result_errno_to_result();
     }
 
     ssize_t len = strlen(content);
@@ -22,77 +22,77 @@ int fs_write_file(const char *path, const char *content) {
     if (sys_write(fd, content, len) != len) {
         log_errno("write(%s)", path);
         sys_close(fd);
-        return -1;
+        return result_errno_to_result();
     }
 
     close(fd);
-    return 0;
+    return kResultOk;
 }
 
-int fs_exists(const char *path) {
+Result fs_exists(const char *path) {
     struct stat st;
 
     if (sys_stat(path, &st) == 0) {
-        return 1;
+        return kResultOk;
     }
 
     if (errno == ENOENT) {
-        return 0;
+        return kResultNotFound;
     }
 
     log_errno("stat(%s)", path);
 
-    return -1;
+    return kResultSystemError;
 }
 
-int fs_is_directory(const char *path) {
+Result fs_is_directory(const char *path) {
     struct stat st;
 
     if (sys_stat(path, &st) == 0) {
         if (S_ISDIR(st.st_mode)) {
-            return 1;
+            return kResultOk;
         }
-        return 0;
+        return kResultNotDirectory;
     }
 
     if (errno == ENOENT) {
-        return 0;
+        return kResultNotDirectory;
     }
 
     log_errno("stat(%s)", path);
 
-    return -1;
+    return kResultSystemError;
 }
 
-int fs_mkdir(const char *path, mode_t mode) {
+Result fs_mkdir(const char *path, mode_t mode) {
     if (sys_mkdir(path, mode) < 0) {
         log_errno("mkdir(%s)", path);
-        return -1;
+        return result_errno_to_result();
     }
 
-    return 0;
+    return kResultOk;
 }
 
-int fs_ensure_directory(const char *path, mode_t mode) {
-    int exists = fs_exists(path);
+Result fs_ensure_directory(const char *path, mode_t mode) {
+    Result exists = fs_exists(path);
 
-    if (exists < 0) {
-        return -1;
+    if (exists != kResultOk && exists != kResultNotFound) {
+        return exists;
     }
 
-    if (exists) {
-        int is_dir = fs_is_directory(path);
+    if (exists == kResultOk) {
+        Result is_dir = fs_is_directory(path);
 
-        if (is_dir < 0) {
-            return -1;
+        if (is_dir == kResultSystemError) {
+            return is_dir;
         }
 
-        if (!is_dir) {
+        if (is_dir != kResultOk) {
             log_error("%s exists but is not a directory", path);
-            return -1;
+            return kResultNotDirectory;
         }
 
-        return 0;
+        return kResultOk;
     }
 
     return fs_mkdir(path, mode);

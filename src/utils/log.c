@@ -65,16 +65,16 @@ static void log_message(
     sys_write(log_fd, buffer, offset);
 }
 
-int log_init(const char *path) {
+Result log_init(const char *path) {
     int fd = sys_open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
     if (fd < 0) {
-        return -1;
+        return result_errno_to_result();
     }
 
     log_fd = fd;
 
-    return 0;
+    return kResultOk;
 }
 
 void log_close(void) {

@@ -1,4 +1,6 @@
 #pragma once
 
-int mount_namespace_setup(void);
+#include "core/result.h"
+
+Result mount_namespace_setup(void);
 

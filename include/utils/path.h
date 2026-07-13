@@ -2,7 +2,9 @@
 
 #include <stddef.h>
 
-int path_join(char *buffer, size_t size, const char *left, const char *right);
+#include "core/result.h"
 
-int path_printf(char *buffer, size_t size, const char *fmt, ...);
+Result path_join(char *buffer, size_t size, const char *left, const char *right);
+
+Result path_printf(char *buffer, size_t size, const char *fmt, ...);
 

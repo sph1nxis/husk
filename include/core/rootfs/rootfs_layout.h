@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/container_config.h"
+#include "core/result.h"
 
-int rootfs_prepare_layout(const container_config *config);
+Result rootfs_prepare_layout(const container_config *config);
 

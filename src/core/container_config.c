@@ -11,31 +11,31 @@ void container_config_init(container_config *config) {
     config->namespaces = 0;
 }
 
-int container_config_set_command(container_config *config, char **argv) {
+Result container_config_set_command(container_config *config, char **argv) {
     config->argv = argv;
-    return 0;
+    return kResultOk;
 }
 
-int container_config_set_hostname(container_config *config, const char *hostname) {
+Result container_config_set_hostname(container_config *config, const char *hostname) {
     config->hostname = hostname;
-    return 0;
+    return kResultOk;
 }
 
-int container_config_set_rootfs(container_config *config, const char *rootfs) {
+Result container_config_set_rootfs(container_config *config, const char *rootfs) {
     config->rootfs = rootfs;
-    return 0;
+    return kResultOk;
 }
 
-int container_config_enable_namespace(container_config *config, unsigned int ns) {
+Result container_config_enable_namespace(container_config *config, unsigned int ns) {
     config->namespaces |= ns;
-    return 0;
+    return kResultOk;
 }
 
-int container_config_build(container_config *config) {
+Result container_config_build(container_config *config) {
     if (config->argv == NULL) {
         log_error("no command specified");
-        return -1;
+        return kResultInvalidArgument;
     }
-    return 0;
+    return kResultOk;
 }
 

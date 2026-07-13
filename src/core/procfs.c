@@ -5,12 +5,12 @@
 #include "sys/sys.h"
 #include "utils/log.h"
 
-int procfs_setup(void) {
+Result procfs_setup(void) {
     if (sys_mount("proc", "/proc", "proc", 0, NULL) < 0) {
         log_errno("mount(proc)");
-        return -1;
+        return result_errno_to_result();
     }
 
-    return 0;
+    return kResultOk;
 }
 
