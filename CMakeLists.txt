@@ -16,28 +16,32 @@ add_compile_options(
 include_directories(include)
 
 add_executable(husk
-    src/main.c
+    src/common/result.c
+    
+    src/fs/fs.c
+    src/fs/path.c
 
-    src/core/rootfs/chroot_rootfs.c
-    src/core/rootfs/rootfs.c
-    src/core/rootfs/rootfs_layout.c
+    src/namespace/mount_namespace.c
+    src/namespace/procfs.c
+    src/namespace/user_namespace.c
+    src/namespace/uts_namespace.c
 
-    src/core/container.c
-    src/core/container_config.c
-    src/core/container_setup.c
-    src/core/environment.c
-    src/core/init_process.c
-    src/core/mount_namespace.c
-    src/core/process.c
-    src/core/procfs.c
-    src/core/result.c
-    src/core/user_namespace.c
-    src/core/uts_namespace.c
+    src/process/init_process.c
+    src/process/process.c
+    
+    src/rootfs/chroot_rootfs.c
+    src/rootfs/rootfs.c
+    src/rootfs/rootfs_layout.c
+
+    src/runtime/container.c
+    src/runtime/container_config.c
+    src/runtime/environment.c
+    src/runtime/runtime_setup.c
 
     src/sys/sys.c
 
-    src/utils/fs.c
     src/utils/log.c
-    src/utils/path.c
+
+    src/main.c
 )
 
