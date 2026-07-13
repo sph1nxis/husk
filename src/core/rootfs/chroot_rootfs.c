@@ -7,11 +7,6 @@
 #include "sys/sys.h"
 #include "utils/log.h"
 
-static int prepare(const container_config *config) {
-    (void) config;
-    return 0;
-}
-
 static int activate(const container_config *config) {
     if (config->rootfs == NULL) {
         return 0;
@@ -35,7 +30,6 @@ static int cleanup(const container_config *config) {
 }
 
 const rootfs_ops chroot_rootfs_ops = {
-    .prepare = prepare,
     .activate = activate,
     .cleanup = cleanup,
 };

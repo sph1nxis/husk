@@ -20,6 +20,8 @@ add_executable(husk
 
     src/core/rootfs/chroot_rootfs.c
     src/core/rootfs/rootfs.c
+    src/core/rootfs/rootfs_layout.c
+
     src/core/container.c
     src/core/container_config.c
     src/core/container_setup.c
