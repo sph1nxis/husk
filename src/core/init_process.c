@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "core/process.h"
 #include "sys/sys.h"
 #include "utils/log.h"
 
@@ -54,16 +55,6 @@ static const char *signal_name(int sig) {
 
 static void sigchld_handler(int signo) {
     (void) signo;
-}
-
-static int exec_main_process(const container_config *config) {
-    log_info("executing %s", config->argv[0]);
-
-    sys_execvp(config->argv[0], config->argv);
-
-    log_errno("execvp(%s)", config->argv[0]);
-
-    return EXIT_FAILURE;
 }
 
 static int handle_child_exit(pid_t main_pid, pid_t pid, int status) {
@@ -129,15 +120,10 @@ int init_process_run(const container_config *config) {
         return EXIT_FAILURE;
     }
 
-    pid_t main_pid = sys_fork();
-    
-    if (main_pid < 0) {
-        log_errno("fork");
-        return EXIT_FAILURE;
-    }
+    pid_t main_pid = process_spawn(config);
 
-    if (main_pid == 0) {
-        return exec_main_process(config);
+    if (main_pid < 0) {
+        return EXIT_FAILURE;
     }
 
     log_info("main process started (pid=%d)", main_pid);
