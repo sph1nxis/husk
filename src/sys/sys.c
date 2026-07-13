@@ -92,3 +92,11 @@ int sys_chdir(const char *path) {
     return chdir(path);
 }
 
+int sys_mkdir(const char *path, mode_t mode) {
+    return mkdir(path, mode);
+}
+
+int sys_stat(const char *path, struct stat *st) {
+    return stat(path, st);
+}
+

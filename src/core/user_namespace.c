@@ -10,7 +10,7 @@ static int write_setgroups(pid_t pid) {
     char path[PATH_MAX];
     snprintf(path, sizeof(path), "/proc/%d/setgroups", pid);
 
-    if (write_file(path, "deny") < 0) {
+    if (fs_write_file(path, "deny") < 0) {
         return -1;
     }
     return 0;
@@ -24,7 +24,7 @@ static int write_uid_map(pid_t pid) {
     snprintf(path, sizeof(path), "/proc/%d/uid_map", pid);
     snprintf(map, sizeof(map), "0 %d 1\n", uid);
 
-    if (write_file(path, map) < 0) {
+    if (fs_write_file(path, map) < 0) {
         return -1;
     }
     return 0;
@@ -38,7 +38,7 @@ static int write_gid_map(pid_t pid) {
     snprintf(path, sizeof(path), "/proc/%d/gid_map", pid);
     snprintf(map, sizeof(map), "0 %d 1\n", gid);
 
-    if (write_file(path, map) < 0) {
+    if (fs_write_file(path, map) < 0) {
         return -1;
     }
     return 0;
@@ -59,3 +59,4 @@ int user_namespace_setup(pid_t pid) {
 
     return 0;
 }
+

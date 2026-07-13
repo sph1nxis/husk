@@ -1,6 +1,7 @@
 #pragma once
 
 #include <signal.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 
 pid_t sys_clone(int (*fn)(void *), void *stack, int flags, void *arg);
@@ -48,4 +49,8 @@ int sys_mount(
 int sys_chroot(const char *path);
 
 int sys_chdir(const char *path);
+
+int sys_mkdir(const char *path, mode_t mode);
+
+int sys_stat(const char *path, struct stat *st);
 
