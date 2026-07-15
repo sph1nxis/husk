@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "common/result.h"
 #include "runtime/container.h"
 #include "utils/log.h"
 
@@ -13,7 +14,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    if (log_init("husk.log") < 0) {
+    if (log_init("husk.log") != kResultOk) {
         fprintf(stderr, "Failed to open log file\n");
         return EXIT_FAILURE;
     }
