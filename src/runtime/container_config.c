@@ -54,6 +54,11 @@ Result container_config_enable_namespace(container_config *config, unsigned int 
 }
 
 Result container_config_build(container_config *config) {
+    if (config->state != kContainerConfigBuilding) {
+        log_error("container config is not in building state");
+        return kResultInvalidState;
+    }
+
     if (config->argv == NULL) {
         log_error("no command specified");
         return kResultInvalidArgument;
