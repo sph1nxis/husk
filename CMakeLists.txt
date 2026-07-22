@@ -16,6 +16,8 @@ add_compile_options(
 include_directories(include)
 
 add_executable(husk
+    src/cli/cli.c
+
     src/common/result.c
     
     src/fs/fs.c

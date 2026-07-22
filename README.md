@@ -38,7 +38,8 @@ cmake --build build
 
 ```bash
 # inside build/
-./husk /bin/sh
+./husk --help
+./husk --rootfs ~/development/alpine-rootfs --hostname test -- /bin/sh
 ```
 
 ## Architecture

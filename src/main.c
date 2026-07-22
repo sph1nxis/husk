@@ -1,47 +1,51 @@
-#include "runtime/container_config.h"
 #define _GNU_SOURCE
 
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cli/cli.h"
 #include "common/result.h"
 #include "runtime/container.h"
+#include "runtime/container_config.h"
 #include "utils/log.h"
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: husk <command>\n");
+    if (log_init("husk.log") != kResultOk) {
+        fprintf(stderr, "failed to initialize logging\n");
         return EXIT_FAILURE;
     }
 
-    if (log_init("husk.log") != kResultOk) {
-        fprintf(stderr, "Failed to open log file\n");
+    cli_options options;
+
+    Result status = cli_parse(argc, argv, &options);
+    
+    if (status == kResultExitSuccess) {
+        log_close();
+        return EXIT_SUCCESS;
+    }
+
+    if (status != kResultOk) {
+        log_close();
         return EXIT_FAILURE;
     }
 
     container_config config;
 
     container_config_init(&config);
-
-    container_config_set_command(&config, &argv[1]);
-
-    container_config_set_rootfs(
-        &config,
-        "/home/ch1ldzero/development/alpine-rootfs/"
-    );
-
     container_config_defaults(&config);
 
-    if (container_config_build(&config) < 0) {
+    status = cli_apply(&options, &config);
+
+    if (status != kResultOk) {
         log_close();
         return EXIT_FAILURE;
     }
 
-    int ret = container_run(&config);
+    int rc = container_run(&config);
 
     log_close();
 
-    return ret;
+    return rc;
 }
 

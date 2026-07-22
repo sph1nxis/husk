@@ -3,6 +3,9 @@
 typedef enum {
     /* Success */
     kResultOk = 0,
+    
+    /* Exit program without error (used in --help) */
+    kResultExitSuccess,
 
     /* Configuration errors */
     kResultInvalidArgument,
