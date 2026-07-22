@@ -20,6 +20,8 @@ typedef struct {
 
 void container_config_init(container_config *config);
 
+void container_config_defaults(container_config *config);
+
 Result container_config_set_command(container_config *config, char **argv);
 Result container_config_set_hostname(container_config *config, const char *hostname);
 Result container_config_set_rootfs(container_config *config, const char *rootfs);

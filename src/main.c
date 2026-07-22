@@ -1,3 +1,4 @@
+#include "runtime/container_config.h"
 #define _GNU_SOURCE
 
 #include <sched.h>
@@ -30,10 +31,7 @@ int main(int argc, char **argv) {
         "/home/ch1ldzero/development/alpine-rootfs/"
     );
 
-    container_config_enable_namespace(&config, CLONE_NEWUSER);
-    container_config_enable_namespace(&config, CLONE_NEWUTS);
-    container_config_enable_namespace(&config, CLONE_NEWPID);
-    container_config_enable_namespace(&config, CLONE_NEWNS);
+    container_config_defaults(&config);
 
     if (container_config_build(&config) < 0) {
         log_close();

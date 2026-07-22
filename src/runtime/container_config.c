@@ -1,6 +1,9 @@
+#define _GNU_SOURCE
+
 #include "runtime/container_config.h"
 
 #include <limits.h>
+#include <sched.h>
 #include <string.h>
 
 #include "utils/log.h"
@@ -8,9 +11,18 @@
 void container_config_init(container_config *config) {
     config->state = kContainerConfigBuilding;
     config->argv = NULL;
-    config->hostname = "husk";
+    config->hostname = NULL;
     config->rootfs = NULL;
     config->namespaces = 0;
+}
+
+void container_config_defaults(container_config *config) {
+    container_config_enable_namespace(config, CLONE_NEWUSER);
+    container_config_enable_namespace(config, CLONE_NEWUTS);
+    container_config_enable_namespace(config, CLONE_NEWPID);
+    container_config_enable_namespace(config, CLONE_NEWNS);
+
+    container_config_set_hostname(config, "husk");
 }
 
 Result container_config_set_command(container_config *config, char **argv) {
