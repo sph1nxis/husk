@@ -46,6 +46,8 @@ cmake --build build
 
 Project structure:
 
+- `cli/`
+  - Command-Line Interface
 - `common/`
   - Shared types and error handling
 - `fs/`
