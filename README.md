@@ -44,6 +44,12 @@ cmake --build build
 
 Logs will appear in `build/husk.log`.
 
+### Run tests
+```bash
+# inside build/
+ctest --output-on-failure
+```
+
 ## Architecture
 
 Project structure:
@@ -69,10 +75,10 @@ Project structure:
 - `utils/`
   - Common utilities
 
-## Plans 
+## Plans
 
 - x86-64 Assembly syscall wrappers
-- Assembly implementations of libc functions 
+- Assembly implementations of libc functions
 - `clone()` trampoline in Assembly
 - `pivot_root` RootFS strategy
 

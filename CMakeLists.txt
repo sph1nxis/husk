@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(husk C)
+project(husk C ASM)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -11,19 +11,27 @@ add_compile_options(
     -Wall
     -Wextra
     -Wpedantic
+    -Werror
+    -Wshadow
+    -Wcast-align
+    -Wstrict-prototypes
+    -Wmissing-prototypes
+    -Wno-unused-parameter
 )
 
 include_directories(include)
 
-add_executable(husk
+add_library(husk_lib STATIC
+    src/asm/strlen.s
+
     src/cli/cli.c
 
     src/common/error.c
     src/common/result.c
-    
+
     src/fs/fs.c
     src/fs/path.c
-    
+
     src/log/log.c
 
     src/namespace/mount_namespace.c
@@ -33,7 +41,7 @@ add_executable(husk
 
     src/process/init_process.c
     src/process/process.c
-    
+
     src/rootfs/chroot_rootfs.c
     src/rootfs/rootfs.c
     src/rootfs/rootfs_layout.c
@@ -44,7 +52,11 @@ add_executable(husk
     src/runtime/runtime_setup.c
 
     src/sys/sys.c
-
-    src/main.c
 )
+
+add_executable(husk src/main.c)
+target_link_libraries(husk PRIVATE husk_lib)
+
+enable_testing()
+add_subdirectory(tests)
 
