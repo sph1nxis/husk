@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "utils/log.h"
+#include "log/log.h"
 
 Result path_join(char *buffer, size_t size, const char *left, const char *right) {
     while (*right == '/') {

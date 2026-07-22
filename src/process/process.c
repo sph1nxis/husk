@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 
+#include "log/log.h"
 #include "sys/sys.h"
-#include "utils/log.h"
 
 int process_exec(const container_config *config) {
     log_info("executing %s", config->argv[0]);

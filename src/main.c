@@ -6,9 +6,9 @@
 
 #include "cli/cli.h"
 #include "common/result.h"
+#include "log/log.h"
 #include "runtime/container.h"
 #include "runtime/container_config.h"
-#include "utils/log.h"
 
 int main(int argc, char **argv) {
     if (log_init("husk.log") != kResultOk) {

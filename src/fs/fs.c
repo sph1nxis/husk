@@ -6,23 +6,21 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "common/error.h"
+#include "log/log.h"
 #include "sys/sys.h"
-#include "utils/log.h"
 
 Result fs_write_file(const char *path, const char *content) {
     int fd = sys_open(path, O_WRONLY, 0);
 
     if (fd < 0) {
-        log_errno("open(%s)", path);
-        return result_errno_to_result();
+        return system_error("open(%s)", path);
     }
 
     ssize_t len = strlen(content);
 
     if (sys_write(fd, content, len) != len) {
-        log_errno("write(%s)", path);
-        sys_close(fd);
-        return result_errno_to_result();
+        return system_error("open(%s)", path);
     }
 
     close(fd);
@@ -40,9 +38,7 @@ Result fs_exists(const char *path) {
         return kResultNotFound;
     }
 
-    log_errno("stat(%s)", path);
-
-    return kResultSystemError;
+    return system_error("stat(%s)", path);
 }
 
 Result fs_is_directory(const char *path) {
@@ -59,15 +55,12 @@ Result fs_is_directory(const char *path) {
         return kResultNotDirectory;
     }
 
-    log_errno("stat(%s)", path);
-
-    return kResultSystemError;
+    return system_error("stat(%s)", path);
 }
 
 Result fs_mkdir(const char *path, mode_t mode) {
     if (sys_mkdir(path, mode) < 0) {
-        log_errno("mkdir(%s)", path);
-        return result_errno_to_result();
+        return system_error("mkdir(%s)", path);
     }
 
     return kResultOk;

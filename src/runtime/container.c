@@ -6,15 +6,14 @@
 #include <sched.h>
 #include <signal.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
+#include "log/log.h"
 #include "namespace/user_namespace.h"
 #include "process/init_process.h"
 #include "rootfs/rootfs.h"
 #include "runtime/runtime_setup.h"
 #include "sys/sys.h"
-#include "utils/log.h"
 
 enum {
     kStackSize = 1024 * 1024

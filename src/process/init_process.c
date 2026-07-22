@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "log/log.h"
 #include "process/process.h"
 #include "sys/sys.h"
-#include "utils/log.h"
 
 static const char *signal_name(int sig) {
     switch (sig) {

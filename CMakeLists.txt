@@ -18,10 +18,13 @@ include_directories(include)
 add_executable(husk
     src/cli/cli.c
 
+    src/common/error.c
     src/common/result.c
     
     src/fs/fs.c
     src/fs/path.c
+    
+    src/log/log.c
 
     src/namespace/mount_namespace.c
     src/namespace/procfs.c
@@ -41,8 +44,6 @@ add_executable(husk
     src/runtime/runtime_setup.c
 
     src/sys/sys.c
-
-    src/utils/log.c
 
     src/main.c
 )

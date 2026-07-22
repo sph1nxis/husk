@@ -39,7 +39,7 @@ cmake --build build
 ```bash
 # inside build/
 ./husk --help
-./husk --rootfs ~/development/alpine-rootfs --hostname test -- /bin/sh
+./husk --rootfs ~/development/alpine-rootfs --hostname husk -- /bin/sh
 ```
 
 ## Architecture
@@ -52,6 +52,8 @@ Project structure:
   - Shared types and error handling
 - `fs/`
   - Filesystem and path utilities
+- `log/`
+  - Logging
 - `namespace/`
   - User, PID, UTS, Mount namespace setup and `procfs`
 - `process/`
@@ -63,11 +65,10 @@ Project structure:
 - `sys/`
   - Linux API abstraction layer
 - `utils/`
-  - Logging and common utilities
+  - Common utilities
 
 ## Plans 
 
-- CLI
 - x86-64 Assembly syscall wrappers
 - Assembly implementations of libc functions 
 - `clone()` trampoline in Assembly

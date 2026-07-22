@@ -1,11 +1,11 @@
-#include "utils/log.h"
+#include "log/log.h"
 
 #include <errno.h>
 #include <fcntl.h>
-#include <pthread.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "sys/sys.h"
@@ -16,11 +16,7 @@ enum {
 
 static int log_fd = STDERR_FILENO;
 
-static void log_message(
-    const char *level,
-    const char *fmt,
-    va_list args
-) {
+static void log_message(const char *level, const char *fmt, va_list args) {
     char buffer[kLogBufferSize];
     int offset = 0;
 
@@ -45,13 +41,18 @@ static void log_message(
         pid
     );
 
-    if (offset < 0 || offset >= (int) sizeof(buffer)) {
+    if (offset < 0 || offset >= (int)sizeof(buffer)) {
         return;
     }
 
-    offset += vsnprintf(buffer + offset, sizeof(buffer) - offset, fmt, args);
+    offset += vsnprintf(
+        buffer + offset,
+        sizeof(buffer) - offset,
+        fmt,
+        args
+    );
 
-    if (offset < 0 || offset >= (int) sizeof(buffer)) {
+    if (offset < 0 || offset >= (int)sizeof(buffer)) {
         return;
     }
 
@@ -63,6 +64,43 @@ static void log_message(
     }
 
     sys_write(log_fd, buffer, offset);
+}
+
+void vlog_errno(const char *fmt, va_list args) {
+    int saved_errno = errno;
+
+    char user_msg[kLogBufferSize];
+
+    vsnprintf(user_msg, sizeof(user_msg), fmt, args);
+
+    char buffer[kLogBufferSize];
+    int offset = 0;
+
+    pid_t pid = sys_getpid();
+
+    time_t now = time(NULL);
+    struct tm tm_now;
+
+    localtime_r(&now, &tm_now);
+
+    offset += snprintf(
+        buffer + offset,
+        sizeof(buffer) - offset,
+        "%04d-%02d-%02d %02d:%02d:%02d [ERROR] [pid=%d] %s: %s\n",
+        tm_now.tm_year + 1900,
+        tm_now.tm_mon + 1,
+        tm_now.tm_mday,
+        tm_now.tm_hour,
+        tm_now.tm_min,
+        tm_now.tm_sec,
+        pid,
+        user_msg,
+        strerror(saved_errno)
+    );
+
+    if (offset > 0) {
+        sys_write(log_fd, buffer, offset);
+    }
 }
 
 Result log_init(const char *path) {
@@ -108,44 +146,10 @@ void log_error(const char *fmt, ...) {
 }
 
 void log_errno(const char *fmt, ...) {
-    int saved_errno = errno;
-
-    char user_msg[kLogBufferSize];
-
     va_list args;
+
     va_start(args, fmt);
-
-    vsnprintf(user_msg, sizeof(user_msg), fmt, args);
-
+    vlog_errno(fmt, args);
     va_end(args);
-
-    char buffer[kLogBufferSize];
-    int offset = 0;
-
-    pid_t pid = sys_getpid();
-
-    time_t now = time(NULL);
-    struct tm tm_now;
-
-    localtime_r(&now, &tm_now);
-
-    offset += snprintf(
-        buffer + offset,
-        sizeof(buffer) - offset,
-        "%04d-%02d-%02d %02d:%02d:%02d [ERROR] [pid=%d] %s: %s\n",
-        tm_now.tm_year + 1900,
-        tm_now.tm_mon + 1,
-        tm_now.tm_mday,
-        tm_now.tm_hour,
-        tm_now.tm_min,
-        tm_now.tm_sec,
-        pid,
-        user_msg,
-        strerror(saved_errno)
-    );
-
-    if (offset > 0) {
-        sys_write(log_fd, buffer, offset);
-    }
 }
 
