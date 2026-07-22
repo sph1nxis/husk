@@ -42,6 +42,8 @@ cmake --build build
 ./husk --rootfs ~/development/alpine-rootfs --hostname husk -- /bin/sh
 ```
 
+Logs will appear in `build/husk.log`.
+
 ## Architecture
 
 Project structure:
