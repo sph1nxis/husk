@@ -1,10 +1,8 @@
 # husk
 
-A minimal rootless container runtime for Linux x86_64 written in C17.
+A minimal rootless container runtime for Linux x86_64 written in C17 and x86-64 Assembly (GAS with Intel syntax).
 
 The project is built from scratch without Docker, runc or other container runtimes to demonstrate how Linux containers work internally using namespaces, `chroot`, `procfs`, UID/GID mappings and low-level Linux APIs.
-
-System calls are isolated behind an abstraction layer, allowing C implementations to be replaced with x86-64 Assembly without changing the public interfaces.
 
 ## Features
 
