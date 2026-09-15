@@ -6,7 +6,8 @@
 
 #include "common/result.h"
 
-static void print_usage(const char *program) {
+static void print_error(const char *program, const char *message) {
+    fprintf(stderr, "%s\n", message);
     fprintf(stderr, "Usage: %s [OPTIONS] [--] [COMMAND ...]\n", program);
     fprintf(stderr, "Try '%s --help' for more information.\n", program);
 }
@@ -37,34 +38,45 @@ Result cli_parse(int argc, char **argv, cli_options *options) {
             return kResultExitSuccess;
         } else if (strcmp(argv[i], "--rootfs") == 0) {
             if (i + 1 >= argc) {
-                fprintf(stderr, "Error: --rootfs requires an argument\n");
-                print_usage(argv[0]);
+                print_error(argv[0], "Error: --rootfs requires an argument");
                 return kResultInvalidArgument;
             }
             options->rootfs = argv[i + 1];
             i += 2;
         } else if (strcmp(argv[i], "--hostname") == 0) {
             if (i + 1 >= argc) {
-                fprintf(stderr, "Error: --hostname requires an argument\n");
-                print_usage(argv[0]);
+                print_error(argv[0], "Error: --hostname requires an argument");
                 return kResultInvalidArgument;
             }
             options->hostname = argv[i + 1];
             i += 2;
         } else if (strcmp(argv[i], "--") == 0) {
-            if (i + 1 < argc) {
-                options->command = &argv[i + 1];
+            if (i + 1 >= argc) {
+                print_error(argv[0], "Error: command to execute is required");
+                return kResultInvalidArgument;
             }
+            options->command = &argv[i + 1];
             break;
         } else {
-            fprintf(stderr, "Error: unknown option '%s'\n", argv[i]);
-            print_usage(argv[0]);
+            char buf[BUFSIZ];
+            sprintf(buf, "Error: unknown option '%s'", argv[i]);
+            print_error(argv[0], buf);
             return kResultInvalidArgument;
         }
     }
 
     if (options->command == NULL && i < argc) {
         options->command = &argv[i];
+    }
+
+    if (options->command == NULL) {
+        print_error(argv[0], "Error: command to execute is required");
+        return kResultInvalidArgument;
+    }
+
+    if (options->rootfs == NULL) {
+        print_error(argv[0], "Error: rootfs is required");
+        return kResultInvalidArgument;
     }
 
     return kResultOk;
@@ -81,6 +93,13 @@ Result cli_apply(const cli_options *options, container_config *config) {
     rc = container_config_set_hostname(config, options->hostname);
     if (rc != kResultOk) {
         return rc;
+    }
+
+    if (options->hostname == NULL) {
+        rc = container_config_set_hostname(config, "husk");
+        if (rc != kResultOk) {
+            return rc;
+        }
     }
 
     rc = container_config_set_command(config, options->command);

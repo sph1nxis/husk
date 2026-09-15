@@ -21,8 +21,6 @@ void container_config_defaults(container_config *config) {
     container_config_enable_namespace(config, CLONE_NEWUTS);
     container_config_enable_namespace(config, CLONE_NEWPID);
     container_config_enable_namespace(config, CLONE_NEWNS);
-
-    container_config_set_hostname(config, "husk");
 }
 
 Result container_config_set_command(container_config *config, char **argv) {
@@ -85,7 +83,7 @@ Result container_config_build(container_config *config) {
         log_error("no rootfs specified");
         return kResultInvalidArgument;
     }
-    
+
     if (strlen(config->hostname) > HOST_NAME_MAX) {
         log_error("hostname is too long");
         return kResultInvalidArgument;
