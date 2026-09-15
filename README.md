@@ -53,12 +53,16 @@ ctest --output-on-failure
 
 Project structure:
 
+- `asm/`
+  - Custom Assembly implementations of libc functions and Linux syscalls
 - `cli/`
   - Command-Line Interface
 - `common/`
   - Shared types and error handling
 - `fs/`
   - Filesystem and path utilities
+- `libc/`
+  - libc API abstraction layer
 - `log/`
   - Logging
 - `namespace/`
