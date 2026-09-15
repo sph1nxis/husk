@@ -35,6 +35,8 @@ cmake --build build
 
 ## Usage
 
+To run `husk`, you need a root file system. You can download one [here](https://alpinelinux.org/downloads/) - choose `x86_64` in `MINI ROOT FILESYSTEM`. Then, use the unpacked directory as the `--rootfs` argument.
+
 ```bash
 # inside build/
 ./husk --help
