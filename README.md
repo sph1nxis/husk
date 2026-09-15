@@ -16,6 +16,7 @@ The project is built from scratch without Docker, runc or other container runtim
 - Modular runtime architecture
 - Unified error handling
 - Linux API abstraction layer
+- libc API abstraction layer
 
 ## Build
 
