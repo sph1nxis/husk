@@ -3,7 +3,7 @@
 #include <stddef.h>
 
 #include "common/error.h"
-#include "sys/sys.h"
+#include "sys/fs.h"
 
 Result procfs_setup(const container_config *config) {
     (void) config;

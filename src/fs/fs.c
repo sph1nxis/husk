@@ -8,7 +8,8 @@
 #include "common/error.h"
 #include "libc/string.h"
 #include "log/log.h"
-#include "sys/sys.h"
+#include "sys/fs.h"
+#include "sys/io.h"
 
 Result fs_write_file(const char *path, const char *content) {
     int fd = husk_open(path, O_WRONLY, 0);

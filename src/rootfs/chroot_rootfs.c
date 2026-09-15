@@ -7,7 +7,7 @@
 #include "rootfs/rootfs.h"
 #include "rootfs/rootfs_layout.h"
 #include "runtime/container_config.h"
-#include "sys/sys.h"
+#include "sys/fs.h"
 
 static Result prepare(const container_config *config) {
     return rootfs_prepare_layout(config);

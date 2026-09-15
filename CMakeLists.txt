@@ -54,7 +54,11 @@ add_library(husk_lib STATIC
     src/runtime/environment.c
     src/runtime/runtime_setup.c
 
-    src/sys/sys.c
+    src/sys/fs.c
+    src/sys/io.c
+    src/sys/namespace.c
+    src/sys/process.c
+    src/sys/signal.c
 )
 
 add_executable(husk src/main.c)

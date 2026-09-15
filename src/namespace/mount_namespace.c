@@ -3,7 +3,7 @@
 #include <sys/mount.h>
 
 #include "common/error.h"
-#include "sys/sys.h"
+#include "sys/fs.h"
 
 Result mount_namespace_setup(const container_config *config) {
     (void) config;

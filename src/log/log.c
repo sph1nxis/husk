@@ -8,7 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "sys/sys.h"
+#include "sys/io.h"
+#include "sys/process.h"
 
 enum {
     kLogBufferSize = 4096

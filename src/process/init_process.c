@@ -9,7 +9,8 @@
 
 #include "log/log.h"
 #include "process/process.h"
-#include "sys/sys.h"
+#include "sys/process.h"
+#include "sys/signal.h"
 
 static const char *signal_name(int sig) {
     switch (sig) {

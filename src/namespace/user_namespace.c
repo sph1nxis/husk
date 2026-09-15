@@ -4,7 +4,7 @@
 
 #include "fs/fs.h"
 #include "fs/path.h"
-#include "sys/sys.h"
+#include "sys/process.h"
 
 static Result write_setgroups(pid_t pid) {
     char path[PATH_MAX];
