@@ -5,6 +5,7 @@
 #include <time.h>
 
 #include "asm/string.h"
+#include "libc/memory.h"
 
 static void test_empty(void) {
     assert(asm_strlen("") == 0);
@@ -59,7 +60,7 @@ static void test_very_long_string(void) {
     char *s = (char *) malloc(n + 1);
     assert(s != NULL);
 
-    memset(s, 'x', n);
+    husk_memset(s, 'x', n);
     s[n] = '\0';
 
     assert(asm_strlen(s) == n);

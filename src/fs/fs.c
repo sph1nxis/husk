@@ -2,11 +2,11 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include "common/error.h"
+#include "libc/string.h"
 #include "log/log.h"
 #include "sys/sys.h"
 
@@ -17,7 +17,7 @@ Result fs_write_file(const char *path, const char *content) {
         return system_error("open(%s)", path);
     }
 
-    ssize_t len = strlen(content);
+    ssize_t len = husk_strlen(content);
 
     if (husk_write(fd, content, len) != len) {
         return system_error("open(%s)", path);

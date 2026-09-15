@@ -29,6 +29,9 @@ add_library(husk_lib STATIC
     src/common/error.c
     src/common/result.c
 
+    src/libc/memory.c
+    src/libc/string.c
+
     src/fs/fs.c
     src/fs/path.c
 

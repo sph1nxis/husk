@@ -4,8 +4,8 @@
 
 #include <limits.h>
 #include <sched.h>
-#include <string.h>
 
+#include "libc/string.h"
 #include "log/log.h"
 
 void container_config_init(container_config *config) {
@@ -84,7 +84,7 @@ Result container_config_build(container_config *config) {
         return kResultInvalidArgument;
     }
 
-    if (strlen(config->hostname) > HOST_NAME_MAX) {
+    if (husk_strlen(config->hostname) > HOST_NAME_MAX) {
         log_error("hostname is too long");
         return kResultInvalidArgument;
     }
