@@ -8,7 +8,7 @@
 int process_exec(const container_config *config) {
     log_info("executing %s", config->argv[0]);
 
-    sys_execvp(config->argv[0], config->argv);
+    husk_execvp(config->argv[0], config->argv);
 
     log_errno("execvp(%s)", config->argv[0]);
 
@@ -16,7 +16,7 @@ int process_exec(const container_config *config) {
 }
 
 pid_t process_spawn(const container_config *config) {
-    pid_t pid = sys_fork();
+    pid_t pid = husk_fork();
 
     if (pid < 0) {
         log_errno("fork");

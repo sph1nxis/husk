@@ -18,11 +18,11 @@ static Result activate(const container_config *config) {
         return kResultOk;
     }
 
-    if (sys_chroot(config->rootfs) < 0) {
+    if (husk_chroot(config->rootfs) < 0) {
         return system_error("chroot");
     }
 
-    if (sys_chdir("/") < 0) {
+    if (husk_chdir("/") < 0) {
         return system_error("chdir");
     }
     return kResultOk;

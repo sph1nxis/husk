@@ -8,7 +8,7 @@
 Result mount_namespace_setup(const container_config *config) {
     (void) config;
 
-    if (sys_mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL) < 0) {
+    if (husk_mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL) < 0) {
         return system_error("mount(MS_PRIVATE)");
     }
 

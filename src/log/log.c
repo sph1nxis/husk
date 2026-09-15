@@ -20,7 +20,7 @@ static void log_message(const char *level, const char *fmt, va_list args) {
     char buffer[kLogBufferSize];
     int offset = 0;
 
-    pid_t pid = sys_getpid();
+    pid_t pid = husk_getpid();
 
     time_t now = time(NULL);
     struct tm tm_now;
@@ -63,7 +63,7 @@ static void log_message(const char *level, const char *fmt, va_list args) {
         offset = sizeof(buffer);
     }
 
-    sys_write(log_fd, buffer, offset);
+    husk_write(log_fd, buffer, offset);
 }
 
 void vlog_errno(const char *fmt, va_list args) {
@@ -76,7 +76,7 @@ void vlog_errno(const char *fmt, va_list args) {
     char buffer[kLogBufferSize];
     int offset = 0;
 
-    pid_t pid = sys_getpid();
+    pid_t pid = husk_getpid();
 
     time_t now = time(NULL);
     struct tm tm_now;
@@ -99,12 +99,12 @@ void vlog_errno(const char *fmt, va_list args) {
     );
 
     if (offset > 0) {
-        sys_write(log_fd, buffer, offset);
+        husk_write(log_fd, buffer, offset);
     }
 }
 
 Result log_init(const char *path) {
-    int fd = sys_open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    int fd = husk_open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
     if (fd < 0) {
         return result_errno_to_result();
@@ -117,7 +117,7 @@ Result log_init(const char *path) {
 
 void log_close(void) {
     if (log_fd != STDERR_FILENO) {
-        sys_close(log_fd);
+        husk_close(log_fd);
     }
 }
 

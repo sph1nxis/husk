@@ -11,7 +11,7 @@
 #include "sys/sys.h"
 
 Result fs_write_file(const char *path, const char *content) {
-    int fd = sys_open(path, O_WRONLY, 0);
+    int fd = husk_open(path, O_WRONLY, 0);
 
     if (fd < 0) {
         return system_error("open(%s)", path);
@@ -19,7 +19,7 @@ Result fs_write_file(const char *path, const char *content) {
 
     ssize_t len = strlen(content);
 
-    if (sys_write(fd, content, len) != len) {
+    if (husk_write(fd, content, len) != len) {
         return system_error("open(%s)", path);
     }
 
@@ -30,7 +30,7 @@ Result fs_write_file(const char *path, const char *content) {
 Result fs_exists(const char *path) {
     struct stat st;
 
-    if (sys_stat(path, &st) == 0) {
+    if (husk_stat(path, &st) == 0) {
         return kResultOk;
     }
 
@@ -44,7 +44,7 @@ Result fs_exists(const char *path) {
 Result fs_is_directory(const char *path) {
     struct stat st;
 
-    if (sys_stat(path, &st) == 0) {
+    if (husk_stat(path, &st) == 0) {
         if (S_ISDIR(st.st_mode)) {
             return kResultOk;
         }
@@ -59,7 +59,7 @@ Result fs_is_directory(const char *path) {
 }
 
 Result fs_mkdir(const char *path, mode_t mode) {
-    if (sys_mkdir(path, mode) < 0) {
+    if (husk_mkdir(path, mode) < 0) {
         return system_error("mkdir(%s)", path);
     }
 

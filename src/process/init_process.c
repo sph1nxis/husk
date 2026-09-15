@@ -135,13 +135,13 @@ static int handle_child_exit(pid_t main_pid, pid_t pid, int status) {
             int sig = WTERMSIG(status);
             if (sig == SIGINT || sig == SIGTERM) {
                     log_info(
-                    "main process terminated by signal %d (%s)", 
+                    "main process terminated by signal %d (%s)",
                     sig,
                     signal_name(sig)
                 );
             } else {
                 log_warn(
-                    "main process killed by signal %d (%s)", 
+                    "main process killed by signal %d (%s)",
                     sig,
                     signal_name(sig)
                 );
@@ -152,7 +152,7 @@ static int handle_child_exit(pid_t main_pid, pid_t pid, int status) {
         log_warn("main process terminated unexpectedly (status=%d)", status);
         return EXIT_FAILURE;
     }
-    
+
     if (WIFEXITED(status)) {
         log_info(
             "child pid=%d exited with status %d",
@@ -161,7 +161,7 @@ static int handle_child_exit(pid_t main_pid, pid_t pid, int status) {
         );
     } else if (WIFSIGNALED(status)) {
         log_info(
-            "child pid=%d killed by signal %d", 
+            "child pid=%d killed by signal %d",
             pid,
             WTERMSIG(status)
         );
@@ -174,15 +174,15 @@ static int handle_child_exit(pid_t main_pid, pid_t pid, int status) {
 int init_process_run(const container_config *config) {
     struct sigaction sa = {0};
     sa.sa_handler = sigchld_handler;
-    
-    if (sys_sigemptyset(&sa.sa_mask) < 0) {
+
+    if (husk_sigemptyset(&sa.sa_mask) < 0) {
         log_errno("sigemptyset");
         return EXIT_FAILURE;
     }
-    
+
     sa.sa_flags = SA_RESTART;
-    
-    if (sys_sigaction(SIGCHLD, &sa, NULL) < 0) {
+
+    if (husk_sigaction(SIGCHLD, &sa, NULL) < 0) {
         log_errno("sigaction");
         return EXIT_FAILURE;
     }
@@ -197,7 +197,7 @@ int init_process_run(const container_config *config) {
 
     for (;;) {
         int status;
-        pid_t pid = sys_waitpid(-1, &status, 0);
+        pid_t pid = husk_waitpid(-1, &status, 0);
 
         if (pid < 0) {
             if (errno == EINTR) {
@@ -208,7 +208,7 @@ int init_process_run(const container_config *config) {
         }
 
         int ret = handle_child_exit(main_pid, pid, status);
-        
+
         if (ret >= 0) {
             return ret;
         }

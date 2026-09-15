@@ -29,24 +29,24 @@ typedef struct {
 static int child_main(void *arg) {
     child_config *child_cfg = arg;
 
-    sys_close(child_cfg->pipe_fd[1]);
+    husk_close(child_cfg->pipe_fd[1]);
 
     char sync;
-    ssize_t ret = sys_read(child_cfg->pipe_fd[0], &sync, 1);
+    ssize_t ret = husk_read(child_cfg->pipe_fd[0], &sync, 1);
 
     if (ret < 0) {
         log_errno("read sync pipe");
-        sys_close(child_cfg->pipe_fd[0]);
+        husk_close(child_cfg->pipe_fd[0]);
         return EXIT_FAILURE;
     }
 
     if (ret != 1) {
         log_error("failed to synchronize with parent (unexpected EOF)");
-        sys_close(child_cfg->pipe_fd[0]);
+        husk_close(child_cfg->pipe_fd[0]);
         return EXIT_FAILURE;
     }
 
-    sys_close(child_cfg->pipe_fd[0]);
+    husk_close(child_cfg->pipe_fd[0]);
 
     if (container_setup(child_cfg->config) < 0) {
         return EXIT_FAILURE;
@@ -67,14 +67,14 @@ int container_run(const container_config *config) {
         .config = config,
     };
 
-    if (sys_pipe(child_cfg.pipe_fd) < 0) {
+    if (husk_pipe(child_cfg.pipe_fd) < 0) {
         log_errno("pipe");
         return EXIT_FAILURE;
     }
 
     int flags = config->namespaces | SIGCHLD;
 
-    pid_t pid = sys_clone(
+    pid_t pid = husk_clone(
         child_main,
         child_stack + kStackSize,
         flags,
@@ -82,8 +82,8 @@ int container_run(const container_config *config) {
     );
 
     if (pid < 0) {
-        sys_close(child_cfg.pipe_fd[0]);
-        sys_close(child_cfg.pipe_fd[1]);
+        husk_close(child_cfg.pipe_fd[0]);
+        husk_close(child_cfg.pipe_fd[1]);
 
         log_errno("clone");
         return EXIT_FAILURE;
@@ -91,32 +91,32 @@ int container_run(const container_config *config) {
 
     log_info("created container process pid=%d", pid);
 
-    sys_close(child_cfg.pipe_fd[0]);
+    husk_close(child_cfg.pipe_fd[0]);
 
     log_info("configuring user namespace");
 
     if (user_namespace_setup(pid) < 0) {
-        sys_close(child_cfg.pipe_fd[1]);
-        sys_waitpid(pid, NULL, 0);
+        husk_close(child_cfg.pipe_fd[1]);
+        husk_waitpid(pid, NULL, 0);
         return EXIT_FAILURE;
     }
 
     log_info("user namespace configured");
 
-    if (sys_write(child_cfg.pipe_fd[1], "x", 1) != 1) {
+    if (husk_write(child_cfg.pipe_fd[1], "x", 1) != 1) {
         log_errno("write (sync)");
-        sys_close(child_cfg.pipe_fd[1]);
+        husk_close(child_cfg.pipe_fd[1]);
 
-        sys_waitpid(pid, NULL, 0);
+        husk_waitpid(pid, NULL, 0);
 
         return EXIT_FAILURE;
     }
 
-    sys_close(child_cfg.pipe_fd[1]);
+    husk_close(child_cfg.pipe_fd[1]);
 
     int status;
 
-    if (sys_waitpid(pid, &status, 0) < 0) {
+    if (husk_waitpid(pid, &status, 0) < 0) {
         log_errno("waitpid");
         return EXIT_FAILURE;
     }

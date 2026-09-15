@@ -26,7 +26,7 @@ static Result write_setgroups(pid_t pid) {
 static Result write_uid_map(pid_t pid) {
     char path[PATH_MAX];
     char map[256];
-    uid_t uid = sys_getuid();
+    uid_t uid = husk_getuid();
     Result rc;
 
     rc = path_printf(path, sizeof(path), "/proc/%d/uid_map", pid);
@@ -50,7 +50,7 @@ static Result write_uid_map(pid_t pid) {
 static Result write_gid_map(pid_t pid) {
     char path[PATH_MAX];
     char map[256];
-    gid_t gid = sys_getgid();
+    gid_t gid = husk_getgid();
     Result rc;
 
     rc = path_printf(path, sizeof(path), "/proc/%d/gid_map", pid);
@@ -83,7 +83,7 @@ Result user_namespace_setup(pid_t pid) {
     if (rc != kResultOk) {
         return rc;
     }
-    
+
     rc = write_gid_map(pid);
     if (rc != kResultOk) {
         return rc;
